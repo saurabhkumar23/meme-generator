@@ -11,42 +11,54 @@ let aspectRatioInput = document.querySelector('.aspect-ratio select')
 let inputImage = document.querySelector('input[type="file"]')
 let bgOverlayInputs = document.querySelectorAll('.radios input[type="radio"]')
 let opacityInput = document.querySelector('.overlay-opacity input')
-let textAreaInput = document.querySelector('.text-area textarea')
+let textAreaInput1 = document.querySelector('.text-area .text-1')
+let textAreaInput2 = document.querySelector('.text-area .text-2')
+let textColorInput = document.querySelector('.text-color input')
 let textSizeInput = document.querySelector('.text-size input')
+let textWeightInput = document.querySelector('.text-weight input')
 let textStyleInput = document.querySelector('.text-font select')
-let textHRange = document.querySelector('.textHRange')
-let textVRange = document.querySelector('.textVRange')
+let text1HRange = document.querySelector('.text1HRange')
+let text1VRange = document.querySelector('.text1VRange')
+let text2HRange = document.querySelector('.text2HRange')
+let text2VRange = document.querySelector('.text2VRange')
 let downloadBtn = document.querySelector('.download-img button')
-let mikeIcon = document.querySelector('.mike-icon i')
-let SpeechRecognition = window.webkitSpeechRecognition
-let recognition = new SpeechRecognition()
-recognition.continuous = true;
+let mikeIcon = document.querySelectorAll('.mike-icon i')
+let SpeechRecognition1 = window.webkitSpeechRecognition
+let SpeechRecognition2 = window.webkitSpeechRecognition
+let recognition1 = new SpeechRecognition1()
+let recognition2 = new SpeechRecognition2()
+recognition1.continuous = true;
+recognition2.continuous = true;
 let isSpeakModeOn = false
 
 // canvas attributes
 let cWidth = 1024
 let cHeight = 512
 let img
-let text = 'Text'
+let text1 = 'Text1'
+let text2 = 'Text2'
+let fontColor = 'black'
+let fontWeight = 'normal'
 let fontSize = '50'
 let fontStyle = 'Sans-Serif'
-let text_X = 20
-let text_Y = 60
-let overlay = '#858484'
-let opacity = 0.5
+let text1_X = 20
+let text1_Y = 60
+let text2_X = 200
+let text2_Y = 60
+let overlay = 'white'
+let opacity = 0
 
 // init call
 updateCanvas()
 
 // canvas width n height
-aspectRatioInput.addEventListener('change',function(e){
+aspectRatioInput.addEventListener('change', function (e) {
     let ratio = e.target.value
-    if(ratio == 'wide'){
+    if (ratio == 'wide') {
         cWidth = 1024
         cHeight = 512
-    }
-    else{
-        cWidth  = 600
+    } else {
+        cWidth = 600
         cHeight = 600
     }
     // update canvas
@@ -54,21 +66,21 @@ aspectRatioInput.addEventListener('change',function(e){
 })
 
 // image
-inputImage.addEventListener('change',function(e){
+inputImage.addEventListener('change', function (e) {
     // get image
     let imageData = e.target.files[0]
     img = new Image()
     // set url
-	img.src = URL.createObjectURL(imageData)
+    img.src = URL.createObjectURL(imageData)
     img.onload = () => {
         // update canvas
         updateCanvas()
     }
 })
 
-// bg overlay
-for(let i=0;i<bgOverlayInputs.length;i++){
-    bgOverlayInputs[i].addEventListener('change',function(e){
+// overlay
+for (let i = 0; i < bgOverlayInputs.length; i++) {
+    bgOverlayInputs[i].addEventListener('change', function (e) {
         // set overlay
         overlay = e.target.value
         // update canvas
@@ -77,70 +89,113 @@ for(let i=0;i<bgOverlayInputs.length;i++){
 }
 
 // opacity
-opacityInput.addEventListener('change',function(e){
+opacityInput.addEventListener('change', function (e) {
     // set opacity
     opacity = e.target.value
     // update canvas
     updateCanvas()
 })
 
-// text
-textAreaInput.addEventListener('keyup',function(e){
-    // set text
-    text = e.target.value
+// text1
+textAreaInput1.addEventListener('keyup', function (e) {
+    // set text1
+    text1 = e.target.value
     // update canvas
     updateCanvas()
 })
 
-// fontsize
-textSizeInput.addEventListener('change',function(e){
+// text2
+textAreaInput2.addEventListener('keyup', function (e) {
+    // set text2
+    text2 = e.target.value
+    // update canvas
+    updateCanvas()
+})
+
+// font color
+textColorInput.addEventListener('change', function (e) {
+    // set color
+    fontColor = e.target.value
+    // set border color on UI
+    document.querySelector('.text-color').style.borderBottom = '3px solid ' + fontColor
+    // update canvas
+    updateCanvas()
+})
+
+// font size
+textSizeInput.addEventListener('change', function (e) {
     // set font size
     fontSize = e.target.value
     // update canvas
     updateCanvas()
 })
 
+// font weight
+textWeightInput.addEventListener('change', function (e) {
+    // set font weight
+    fontWeight = e.target.value
+    // update canvas
+    updateCanvas()
+})
+
 // font style
-textStyleInput.addEventListener('change',function(e){
+textStyleInput.addEventListener('change', function (e) {
     // set font style
     fontStyle = e.target.value
     //  update canvas
     updateCanvas()
 })
 
-// hor text alignment
-textHRange.addEventListener('change',function(e){
+// hor text1 alignment
+text1HRange.addEventListener('change', function (e) {
     // set x
-    text_X = e.target.value
+    text1_X = e.target.value
     //  update canvas
     updateCanvas()
 })
 
-// ver text alignment
-textVRange.addEventListener('change',function(e){
-    console.log(e.target.value)
+// ver text1 alignment
+text1VRange.addEventListener('change', function (e) {
     // set y
-    text_Y = e.target.value
+    text1_Y = e.target.value
+    //  update canvas
+    updateCanvas()
+})
+
+// hor text2 alignment
+text2HRange.addEventListener('change', function (e) {
+    // set x
+    text2_X = e.target.value
+    //  update canvas
+    updateCanvas()
+})
+
+// ver text1 alignment
+text2VRange.addEventListener('change', function (e) {
+    // set y
+    text2_Y = e.target.value
     //  update canvas
     updateCanvas()
 })
 
 
 // main call for canvas update
-function updateCanvas(){
+function updateCanvas() {
     // update canvas
     updateOverlayCanvas()
     updateImageCanvas()
     updateTextCanvas()
     // update range for text alignment
-    textHRange.max = cWidth
-    textVRange.max = cHeight
+    text1HRange.max = cWidth
+    text1VRange.max = cHeight
+    text2HRange.max = cWidth
+    text2VRange.max = cHeight
     // update mainbuffer canvas
     updateBufferCanvas()
 }
 
-// ovelay canvas update
-function updateOverlayCanvas(){
+// overlay canvas update
+function updateOverlayCanvas() {
     // set canvas height and width
     canvasOverlay.height = cHeight
     canvasOverlay.width = cWidth
@@ -148,88 +203,116 @@ function updateOverlayCanvas(){
     toolOverlay.globalAlpha = opacity
     // set overlay
     toolOverlay.fillStyle = overlay
-    toolOverlay.fillRect(0,0,canvasOverlay.width,canvasOverlay.height)
+    toolOverlay.fillRect(0, 0, canvasOverlay.width, canvasOverlay.height)
 }
 
 // image canvas update
-function updateImageCanvas(){
+function updateImageCanvas() {
     // set canvas height and width
     canvasImage.height = cHeight
     canvasImage.width = cWidth
     // set bg image
-    if(img){
-        toolImage.drawImage(img,0,0,canvasImage.width,canvasImage.height)
+    if (img) {
+        toolImage.drawImage(img, 0, 0, canvasImage.width, canvasImage.height)
     }
 }
 
 // text canvas update
-function updateTextCanvas(){
+function updateTextCanvas() {
     // set canvas height and width
     canvasText.height = cHeight
     canvasText.width = cWidth
+    // set font color
+    toolText.fillStyle = fontColor
     // set font 
-    toolImage.font = fontSize + 'px' + ' ' + fontStyle
-    // set text
-    toolImage.fillText(text,text_X,text_Y)
+    toolText.font = fontWeight + ' ' + fontSize + 'px' + ' ' + fontStyle
+    // set text1
+    toolText.fillText(text1, text1_X, text1_Y)
+    // set text2
+    toolText.fillText(text2,text2_X,text2_Y)
 }
 
 // buffer canvas update
-function updateBufferCanvas(){
+function updateBufferCanvas() {
     // set canvas height and width
     canvasBuffer.height = cHeight
     canvasBuffer.width = cWidth
     // image
-    if(img){
-        toolBuffer.drawImage(img,0,0,canvasBuffer.width,canvasBuffer.height)
+    if (img) {
+        toolBuffer.drawImage(img, 0, 0, canvasBuffer.width, canvasBuffer.height)
     }
-    // overlay
-    toolBuffer.fillStyle = overlay
     // opacity
     toolBuffer.globalAlpha = opacity
-    toolBuffer.fillRect(0,0,canvasBuffer.width,canvasBuffer.height)
+    // overlay
+    toolBuffer.fillStyle = overlay
+    toolBuffer.fillRect(0, 0, canvasBuffer.width, canvasBuffer.height)
     // text
-    toolBuffer.fillStyle = 'white'
-    toolBuffer.font = fontSize + 'px' + ' ' + fontStyle
-    toolBuffer.fillText(text,text_X,text_Y)
+    toolBuffer.globalAlpha = 1
+    toolBuffer.fillStyle = fontColor
+    toolBuffer.font = fontWeight + ' ' + fontSize + 'px' + ' ' + fontStyle
+    toolBuffer.fillText(text1, text1_X, text1_Y)
+    toolBuffer.fillText(text2,text2_X,text2_Y)
 }
 
 // download canvas
-downloadBtn.addEventListener('click',function(){
-    let url = canvasBuffer.toDataURL()                        // canvas give url of drawing image
-    let a = document.createElement('a')               // <a download="file.png" href="url"></a>
-    a.download = 'file.png'
+downloadBtn.addEventListener('click', function () {
+    let url = canvasBuffer.toDataURL() // canvas give url of drawing image
+    let a = document.createElement('a') // <a download="file.png" href="url"></a>
+    a.download = 'file.jpg'
     a.href = url
     a.click()
     a.remove()
 })
 
 // full screen feature
-canvasExpandIcon.addEventListener('click',function(){
+canvasExpandIcon.addEventListener('click', function () {
     canvasBuffer.requestFullscreen()
 })
 
 // speech to text
-mikeIcon.addEventListener('click',function(){
-    if(isSpeakModeOn){
-        recognition.stop();    // speak done
-        mikeIcon.style.color = 'white'
+mikeIcon[0].addEventListener('click',function(){
+    if (isSpeakModeOn) {
+        recognition1.stop(); // speak done
+        mikeIcon[0].style.color = 'white'
+
+    } else {
+        recognition1.start(); // speak now
+        mikeIcon[0].style.color = '#dd0a0a'
     }
-    else{
-        recognition.start();   // speak now
-        mikeIcon.style.color = '#dd0a0a'
+    isSpeakModeOn = !isSpeakModeOn
+})
+
+mikeIcon[1].addEventListener('click', function () {
+    if (isSpeakModeOn) {
+        recognition2.stop(); // speak done
+        mikeIcon[1].style.color = 'white'
+
+    } else {
+        recognition2.start(); // speak now
+        mikeIcon[1].style.color = '#dd0a0a'
     }
     isSpeakModeOn = !isSpeakModeOn
 })
 
 // get speech result
-recognition.onresult = function(event){
+recognition1.onresult = function (event) {
     let current = event.resultIndex
     let transcript = event.results[current][0].transcript
-    // set text
-    text += transcript
+    // set text1
+    text1 += transcript
     // set text on textarea
-    textAreaInput.value = text
+    textAreaInput1.value = text1
     // update canvas
     updateCanvas()
 };
-    
+
+recognition2.onresult = function (event) {
+    let current = event.resultIndex
+    let transcript = event.results[current][0].transcript
+    // set text2
+    text2 += transcript
+    // set text on textarea
+    textAreaInput2.value = text2
+    // update canvas
+    updateCanvas()
+};

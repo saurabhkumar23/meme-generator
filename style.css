@@ -6,6 +6,7 @@ body {
     margin: 0;
     padding: 0;
     font-family: 'Roboto', sans-serif;
+    overflow: hidden;
 }
 
 .main-container {
@@ -20,6 +21,18 @@ body {
     font-size: 12px;
     background: #4285f4;
     color: white;
+    overflow-y: scroll;
+}
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+.sidebar::-webkit-scrollbar {
+    display: none;
+}
+
+  /* Hide scrollbar for IE, Edge and Firefox */
+.sidebar{
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
 }
 
 .sidebar>div {
@@ -37,19 +50,30 @@ select,
 }
 
 .img-input,
-.text-input {
+.text-input, .text-family-color {
     display: flex;
     justify-content: space-evenly;
     align-items: center;
 }
 
 .inputImageBtn,
-textarea {
+textarea,.text-family-color select  {
     width: 80%;
+}
+
+.text-family-color .text-color{
+    width: 10%;
+    font-size: 1.7em;
+    border-bottom: 3px solid black;
 }
 
 textarea {
     resize: none;
+}
+
+.align-bar-container{
+    display: flex;
+    align-items: center;
 }
 
 i {

@@ -7,7 +7,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="mine.css">
+    <link rel="stylesheet" href="style.css">
     <title>Meme Generator</title>
 </head>
 <body>
@@ -33,9 +33,18 @@
                 </div>
             </div>
             <div class="text-area">
-                <label>TEXT</label>
+                <label>TEXT 1</label>
                 <div class="text-input">
-                    <textarea>Text</textarea>
+                    <textarea class="text-1">Text 1</textarea>
+                    <div class="mike-icon">
+                        <i class="fas fa-microphone-alt fa-2x"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="text-area">
+                <label>TEXT 2</label>
+                <div class="text-input">
+                    <textarea class="text-2">Text 2</textarea>
                     <div class="mike-icon">
                         <i class="fas fa-microphone-alt fa-2x"></i>
                     </div>
@@ -47,9 +56,15 @@
                     <input name="fontSize" type="range" max="100" min="0" step="10" value="50">
                 </div>
             </div>
+            <div class="text-weight">
+                <label>FONT WEIGHT</label>   
+                <div>
+                    <input name="fontWeight" type="range" max="900" min="100" step="100" value="100">
+                </div>
+            </div>
             <div class="text-font">
                 <label>FONT</label>
-                <div>
+                <div class="text-family-color">
                     <select name="font-family">
                         <option value="Sans-Serif">Sans-Serif</option>
                         <option value="Verdana">Verdana</option>
@@ -57,16 +72,35 @@
                         <option value="Courier New">Courier New</option>
                         <option value="Helvetica">Helvetica</option>
                     </select>
+                    <div class="text-color">
+                        <label for="font-color" >A</label>
+                        <input id="font-color" type="color" style="visibility: hidden; opacity: 0; position: absolute;">
+                    </div>
                 </div>
             </div>
             <div class="text-alignment">
-                <label>TEXT ALIGNMENT</label>
+                <label>TEXT ALIGNMENT 1</label>
                 <div>
-                    <div>
-                        <input class="textHRange" name="textHAlign" type="range" max="" min="20" step="" value="20">
+                    <div class="align-bar-container">
+                        <label>HOR </label>
+                        <input class="text1HRange" name="text1HAlign" type="range" max="" min="20" step="" value="20">
                     </div>
-                    <div>
-                        <input class="textVRange" name="textVAlign" type="range" max="" min="60" step="" value="60">
+                    <div class="align-bar-container">
+                        <label>VER </label>
+                        <input class="text1VRange" name="text1VAlign" type="range" max="" min="60" step="" value="60">
+                    </div>
+                </div>
+            </div>
+            <div class="text-alignment">
+                <label>TEXT ALIGNMENT 2</label>
+                <div>
+                    <div class="align-bar-container">
+                        <label>HOR </label>
+                        <input class="text2HRange" name="text2HAlign" type="range" max="" min="20" step="" value="200">
+                    </div>
+                    <div class="align-bar-container">
+                        <label>VER </label>
+                        <input class="text2VRange" name="text2VAlign" type="range" max="" min="60" step="" value="60">
                     </div>
                 </div>
             </div>
@@ -89,7 +123,7 @@
             <div class="overlay-opacity">
                 <label for="opacity" id="opacity">OVERLAY OPACITY</label>   
                 <div>
-                    <input name="opacity" type="range" max="1" min="0.00" step=".01" value=".5">
+                    <input name="opacity" type="range" max="1" min="0.00" step=".01" value="0.0">
                 </div>
             </div>
             <div class="download-img">
@@ -105,7 +139,7 @@
             <canvas class="canvas canvas-buffer"></canvas>
         </div>
     </div>
-
+    
     <script src="script.js"></script>
 </body>
 </html>
