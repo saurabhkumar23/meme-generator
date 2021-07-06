@@ -45,7 +45,7 @@ let text1_X = 20
 let text1_Y = 60
 let text2_X = 200
 let text2_Y = 60
-let overlay = 'white'
+let overlay = 'transparent'
 let opacity = 0
 
 // init call
@@ -203,6 +203,7 @@ function updateOverlayCanvas() {
     toolOverlay.globalAlpha = opacity
     // set overlay
     toolOverlay.fillStyle = overlay
+    console.log(overlay)
     toolOverlay.fillRect(0, 0, canvasOverlay.width, canvasOverlay.height)
 }
 
