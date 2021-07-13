@@ -206,3 +206,23 @@ i {
 .canvas-buffer {
     z-index: 2;
 }
+
+.not-supported{
+    display:  none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 2;
+    width: 100vw;
+    height: 100vh;
+    background: #f4eeee;
+    text-align: center;
+    padding-top: 46vh;
+    font-size: 3em;
+}
+
+@media (max-width:1400px) {
+    .not-supported{
+        display : block
+    }
+}
