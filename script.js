@@ -1,5 +1,3 @@
-
-
 // canvas attributes
 let cWidth = 1024
 let cHeight = 512
@@ -15,12 +13,17 @@ let text1_Y = 60
 let text2_X = 200
 let text2_Y = 60
 let overlay = 'transparent'
-let opacity = 0
+let opacity = 0;
 
 // init call
+// update canvases width and height
+for(let i=0;i<canvases.length;i++){
+    canvases[i].height = cHeight
+    canvases[i].width = cWidth
+}
 updateCanvas()
 
-// canvas width n height
+// aspect ratio
 aspectRatioInput.addEventListener('change', function (e) {
     let ratio = e.target.value
     if (ratio == 'wide') {
@@ -29,6 +32,16 @@ aspectRatioInput.addEventListener('change', function (e) {
     } else {
         cWidth = 600
         cHeight = 600
+    }
+    // update range for text alignment
+    text1HRange.max = cWidth
+    text1VRange.max = cHeight
+    text2HRange.max = cWidth
+    text2VRange.max = cHeight
+    // update canvases width and height
+    for(let i=0;i<canvases.length;i++){
+        canvases[i].height = cHeight
+        canvases[i].width = cWidth
     }
     // update canvas
     updateCanvas()
@@ -47,24 +60,6 @@ inputImage.addEventListener('change', function (e) {
     }
 })
 
-// overlay
-for (let i = 0; i < bgOverlayInputs.length; i++) {
-    bgOverlayInputs[i].addEventListener('change', function (e) {
-        // set overlay
-        overlay = e.target.value
-        // update canvas
-        updateCanvas()
-    })
-}
-
-// opacity
-opacityInput.addEventListener('change', function (e) {
-    // set opacity
-    opacity = e.target.value
-    // update canvas
-    updateCanvas()
-})
-
 // text1
 textAreaInput1.addEventListener('keyup', function (e) {
     // set text1
@@ -77,16 +72,6 @@ textAreaInput1.addEventListener('keyup', function (e) {
 textAreaInput2.addEventListener('keyup', function (e) {
     // set text2
     text2 = e.target.value
-    // update canvas
-    updateCanvas()
-})
-
-// font color
-textColorInput.addEventListener('change', function (e) {
-    // set color
-    fontColor = e.target.value
-    // set border color on UI
-    document.querySelector('.text-color').style.borderBottom = '3px solid ' + fontColor
     // update canvas
     updateCanvas()
 })
@@ -115,6 +100,16 @@ textStyleInput.addEventListener('change', function (e) {
     updateCanvas()
 })
 
+// font color
+textColorInput.addEventListener('change', function (e) {
+    // set color
+    fontColor = e.target.value
+    // set border color on UI
+    document.querySelector('.text-color').style.borderBottom = '3px solid ' + fontColor
+    // update canvas
+    updateCanvas()
+})
+
 // hor text1 alignment
 text1HRange.addEventListener('change', function (e) {
     // set x
@@ -139,7 +134,7 @@ text2HRange.addEventListener('change', function (e) {
     updateCanvas()
 })
 
-// ver text1 alignment
+// ver text2 alignment
 text2VRange.addEventListener('change', function (e) {
     // set y
     text2_Y = e.target.value
@@ -147,51 +142,55 @@ text2VRange.addEventListener('change', function (e) {
     updateCanvas()
 })
 
+// overlay
+for (let i = 0; i < bgOverlayInputs.length; i++) {
+    bgOverlayInputs[i].addEventListener('change', function (e) {
+        // set overlay
+        overlay = e.target.value
+        // update canvas
+        updateCanvas()
+    })
+}
 
+// opacity
+opacityInput.addEventListener('change', function (e) {
+    // set opacity
+    opacity = e.target.value
+    // update canvas
+    updateCanvas()
+})
+
+// **************************************************************************** //
 // main call for canvas update
+// **************************************************************************** //
 function updateCanvas() {
     // update canvas
-    updateOverlayCanvas()
     updateImageCanvas()
+    updateOverlayCanvas()
     updateTextCanvas()
-    // update range for text alignment
-    text1HRange.max = cWidth
-    text1VRange.max = cHeight
-    text2HRange.max = cWidth
-    text2VRange.max = cHeight
     // update mainbuffer canvas
     updateBufferCanvas()
 }
 
-// overlay canvas update
-function updateOverlayCanvas() {
-    // set canvas height and width
-    canvasOverlay.height = cHeight
-    canvasOverlay.width = cWidth
-    // set opacity
-    toolOverlay.globalAlpha = opacity
-    // set overlay
-    toolOverlay.fillStyle = overlay
-    console.log(overlay)
-    toolOverlay.fillRect(0, 0, canvasOverlay.width, canvasOverlay.height)
-}
-
 // image canvas update
 function updateImageCanvas() {
-    // set canvas height and width
-    canvasImage.height = cHeight
-    canvasImage.width = cWidth
     // set bg image
     if (img) {
         toolImage.drawImage(img, 0, 0, canvasImage.width, canvasImage.height)
     }
 }
 
+// overlay canvas update
+function updateOverlayCanvas() {
+    // set opacity
+    toolOverlay.globalAlpha = opacity
+    // set overlay
+    toolOverlay.fillStyle = overlay
+    toolOverlay.fillRect(0, 0, canvasOverlay.width, canvasOverlay.height)
+}
+
 // text canvas update
 function updateTextCanvas() {
-    // set canvas height and width
-    canvasText.height = cHeight
-    canvasText.width = cWidth
     // set font color
     toolText.fillStyle = fontColor
     // set font 
@@ -204,19 +203,15 @@ function updateTextCanvas() {
 
 // buffer canvas update
 function updateBufferCanvas() {
-    // set canvas height and width
-    canvasBuffer.height = cHeight
-    canvasBuffer.width = cWidth
-    // image
+    // 1. image
     if (img) {
         toolBuffer.drawImage(img, 0, 0, canvasBuffer.width, canvasBuffer.height)
     }
-    // opacity
+    // 2. overlay
     toolBuffer.globalAlpha = opacity
-    // overlay
     toolBuffer.fillStyle = overlay
     toolBuffer.fillRect(0, 0, canvasBuffer.width, canvasBuffer.height)
-    // text
+    // 3. text
     toolBuffer.globalAlpha = 1
     toolBuffer.fillStyle = fontColor
     toolBuffer.font = fontWeight + ' ' + fontSize + 'px' + ' ' + fontStyle

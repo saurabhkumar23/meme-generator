@@ -1,4 +1,5 @@
 // canvas
+let canvases = document.querySelectorAll('canvas')
 let canvasOverlay = document.querySelector('.canvas-overlay')
 let canvasImage = document.querySelector('.canvas-image')
 let canvasText = document.querySelector('.canvas-text')
