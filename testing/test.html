@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        *{
+            box-sizing: border-box;
+        }
+        .outer-container{
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .ball{
+            width: 150px;
+            height: 150px;
+            background: #000;
+            border-radius: 50%;
+            position: absolute; 
+        }
+        .container{
+            width: 1200px;
+            height: 500px;
+            border: 1px solid;
+            position: relative;
+        }
+    </style>
+    <title>Document</title>
+</head>
+<body>
+    <div class="outer-container">
+        <div class="container">
+            <div class="ball"></div>
+        </div>
+    </div>
+
+
+
+
+
+
+
+
+    <script>
+        let dragElem = document.querySelector('.ball')
+        let outerContainer = document.querySelector('.outer-container')
+        let container = document.querySelector('.container')
+
+        let isDragMode = false
+
+        dragElem.addEventListener('mousedown',function(){
+            isDragMode = true
+            console.log('mouse down')
+        })
+
+        container.addEventListener('mousemove',function(e){
+            if(isDragMode){
+                let containerDim = container.getBoundingClientRect()
+                console.log(e)
+                let absX = e.clientX
+                let absY = e.clientY
+                let relX = absX - containerDim.left
+                let relY = absY - containerDim.top
+                console.log(relX,relY)
+                dragElem.style.left = relX + 'px'
+                dragElem.style.top = relY + 'px'
+                console.log('mouse mouse')
+            }
+        })
+
+        // container.addEventListener('mouseout',function(){
+        //     isDragMode = false
+        //     console.log('mouse out')
+        // })
+
+        container.addEventListener('mouseup',function(){
+            isDragMode = false
+            console.log('mouse up')
+        })
+
+
+    ;</script>
+</body>
+</html>
