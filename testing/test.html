@@ -74,9 +74,15 @@
         //     console.log('mouse out')
         // })
 
-        container.addEventListener('mouseup',function(){
+        container.addEventListener('mouseup',function(e){
             isDragMode = false
             console.log('mouse up')
+                let containerDim = container.getBoundingClientRect()
+                let absX = e.clientX
+                let absY = e.clientY
+                let relX = absX - containerDim.left
+                let relY = absY - containerDim.top
+                console.log(relX,relY)
         })
 
 
