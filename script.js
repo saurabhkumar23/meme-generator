@@ -1,16 +1,16 @@
 // canvas attributes
-let cWidth = 1024
-let cHeight = 512
+let cWidth = 700
+let cHeight = 350
 let img
 let text1 = 'Text1'
 let text2 = 'Text2'
 let fontColor = 'black'
 let fontWeight = 'normal'
-let fontSize = '50'
+let fontSize = '40'
 let fontStyle = 'Sans-Serif'
-let text1_X = 20
+let text1_X = 10
 let text1_Y = 60
-let text2_X = 200
+let text2_X = 150
 let text2_Y = 60
 let overlay = 'transparent'
 let opacity = 0;
@@ -27,11 +27,11 @@ updateCanvas()
 aspectRatioInput.addEventListener('change', function (e) {
     let ratio = e.target.value
     if (ratio == 'wide') {
-        cWidth = 1024
-        cHeight = 512
+        cWidth = 700
+        cHeight = 350
     } else {
-        cWidth = 600
-        cHeight = 600
+        cWidth = 400
+        cHeight = 400
     }
     // update range for text alignment
     text1HRange.max = cWidth
